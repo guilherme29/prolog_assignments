@@ -9,18 +9,20 @@ coefficient(K):-number(K).
 
 monomial(X):-pvar(X),!.
 monomial(N):-number(N),!.
+monomial(-N):-number(N),!. %adicionei o caso negativo de um monomial
 monomial(X):-power(X),!.
 monomial(K*X):-coefficient(K),power(X),!.
 monomial(K*X):-coefficient(K),pvar(X),!.
 
 polynomial(M):-monomial(M),!.
 polynomial(P+M):-monomial(M),polynomial(P),!.
-%polynomial(P-M):-monomial(-M),polynomial(P),!.
+polynomial(P-M):-monomial(-M),polynomial(P),!.
 
 poly2list(X,[X]):-monomial(X),!.
 poly2list(P+0,[P]).
 poly2list(0+P,[P]):-monomial(P),!.
 poly2list(Y+X,[X|Y1]):-poly2list(Y,Y1).
+poly2list(Y-X,[-X|Y1]):-poly2list(Y,Y1).
 
 simmon(1*P,P):-power(P),!.
 simmon(0*_,0):-!.
@@ -63,9 +65,19 @@ aux_addmonomial(0,_,0):-!.
 aux_addmonomial(1,XExp,XExp):-!.
 aux_addmonomial(K,XExp,K*XExp).
 
+%transforma uma lista num polinomio
 list2poly([P],P):-monomial(P), !.
 list2poly([P|L1], M+P):-list2poly(L1,M),!.
 
+%simplifica uma lista de monomios
 simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 
+%soma de dois polinomios
 addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
+
+%muliplica uma lista por um numero N
+multList(N, [X|[]], [N*X]).
+multList(N, [X|T], [N*X|T2]):- number(N), multList(N, T, T2), !.
+
+%recebe um polinomio, transforma em lista de monomios, faz a multiplicaçao e transforma a lista em porlinomio.
+scalepoly(P, N, NP):- poly2list(P, L), multList(N, L, NL), list2poly(NL, NP).
