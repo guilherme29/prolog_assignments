@@ -1,5 +1,3 @@
-
-
 pvars([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]).
 pvar(X) :- pvars(V), member(X,V).
 
@@ -37,7 +35,7 @@ simpoly(P+M,P2+M3):-
     addmonomial(M,M2,M3).
 simpoly(P+M,P2+M2):-simpoly(P,P2),simmon(M,M2),!.
 
-monparts(X^N,0,X^N):-power(X^N),!.
+monparts(X^N,1,X^N):-power(X^N),!.
 monparts(K*P,K,P):-number(K),!.
 monparts(K,K,indep):-number(K),!.
 monparts(X,1,X):-pvar(X),!.
@@ -65,9 +63,9 @@ aux_addmonomial(0,_,0):-!.
 aux_addmonomial(1,XExp,XExp):-!.
 aux_addmonomial(K,XExp,K*XExp).
 
-list2poly([P],P):-monomial(P).
+list2poly([P],P):-monomial(P), !.
 list2poly([P|L1], M+P):-list2poly(L1,M),!.
 
 simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 
-addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z).
+addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
