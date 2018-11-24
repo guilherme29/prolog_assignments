@@ -80,8 +80,9 @@ simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
 
 %muliplica uma lista por um numero N
+multList(0, _, [0]).
 multList(N, [X|[]], [N*X]).
 multList(N, [X|T], [N*X|T2]):- number(N), multList(N, T, T2), !.
 
 %recebe um polinomio, transforma em lista de monomios, faz a multiplicaçao e transforma a lista em porlinomio.
-scalepoly(P, N, NP):- poly2list(P, L), multList(N, L, NL), list2poly(NL, NP).
+scalepoly(P, N, NP):- poly2list(P, L), multList(N, L, NL), list2poly(NL, NP),!. %aqui devia dar simpoly no final quando o simpoly ficar arranjado
