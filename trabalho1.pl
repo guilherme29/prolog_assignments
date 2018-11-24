@@ -73,7 +73,6 @@ simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
 
 %muliplica uma lista por um numero N
-
 scalelist(0, _, [0]).
 scalelist(N, [X|[]], [R]):- number(N), scalemonomial(X,N,R),!.
 scalelist(N, [X|T], [R|T2]):- number(N), scalemonomial(X,N,R), scalelist(N, T, T2),!.
@@ -86,8 +85,6 @@ scalemonomial(M1,M2,M3):- %M2 e a constante
     number(M2),
     K3 is K1*M2,
     aux_addmonomial(K3,XExp,M3).
-
-%scalelist(N, L, NL):- list2poly(L, PL), scalemonomial(PL,N,SPL), poly2list(SPL,NL).
 
 %recebe um polinomio, transforma em lista de monomios, faz a multiplicaçao e transforma a lista em porlinomio.
 scalepoly(P, N, NP):- poly2list(P, L), scalelist(N, L, NL), list2poly(NL, NP),!. %aqui devia dar simpoly no final quando o simpoly ficar arranjado
