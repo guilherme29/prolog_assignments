@@ -6,8 +6,6 @@ First assignment from logic programming class
 
   ⋅⋅⋅CASO_A_VER: quando temos um monomio do tipo 4*x, tb podemos afirmar que um monomio é do genero x*y, logo devia dar true mas da false...
 
-  ⋅⋅⋅Testar o caso do scalepoly
-
-  ⋅⋅⋅Tentar ver mais casos especificos que falham
+  ⋅⋅⋅ o addpoly não funciona direito para casos dos género 1+2+3+4. a recursividade não está a funcionar corretamente.
 
 Assinado - Ze
