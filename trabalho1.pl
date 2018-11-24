@@ -18,11 +18,15 @@ polynomial(M):-monomial(M),!.
 polynomial(P+M):-monomial(M),polynomial(P),!.
 polynomial(P-M):-monomial(-M),polynomial(P),!.
 
-poly2list(X,[X]):-monomial(X),!.
-poly2list(P+0,[P]).
-poly2list(0+P,[P]):-monomial(P),!.
-poly2list(Y+X,[X|Y1]):-poly2list(Y,Y1).
-poly2list(Y-X,[-X|Y1]):-poly2list(Y,Y1).
+
+poly2list(P,L):-reverse(X,L),poly2listaux(P,X),!.
+poly2listaux(M,[M]):- monomial(M),!.
+poly2listaux(P+0,[P]).
+poly2listaux(0+P,[P]).
+poly2listaux(Y-X,[-X|Y1]):-poly2listaux(Y,Y1),!.
+poly2listaux(Y+X,[X|Y1]):-poly2listaux(Y,Y1),!.
+
+
 
 simmon(1*P,P):-power(P),!.
 simmon(0*_,0):-!.
