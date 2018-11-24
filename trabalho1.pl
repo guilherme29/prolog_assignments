@@ -79,15 +79,15 @@ simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
 
 %muliplica uma lista por um numero N
-multList(0, _, [0]).
-multList(N, [X|[]], [N*X]).
-multList(N, [X|T], [N*X|T2]):- number(N), multList(N, T, T2), !.
-
+scalelist(0, _, [0]).
+scalelist(N, [X|[]], [N*X]).
+scalelist(N, [X|T], [R|T2]):- number(N), scalemonomial(X,N,R), scalelist(N, T, T2), !.
 
 scalemonomial(K1,K2,K3):-
     number(K1),number(K2),!,K3 is K1*K2.
 %M2 e a constante aqui
 scalemonomial(M1,M2,M3):-
+    monomial(M1),
     monparts(M1,K1,XExp),
     number(M2),
     K3 is K1*M2,
