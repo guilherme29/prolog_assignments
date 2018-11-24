@@ -56,8 +56,7 @@ delmonomial(P+M2,X,M,P2+M2):-
     delmonomial(P,X,M,P2).
 
 addmonomial(K1,K2,K3):-
-    number(K1),number(K2),!,
-	       K3 is K1+K2.
+    number(K1),number(K2),!,K3 is K1+K2.
 addmonomial(M1,M2,M3):-
     monparts(M1,K1,XExp),
     monparts(M2,K2,XExp),
@@ -84,5 +83,17 @@ multList(0, _, [0]).
 multList(N, [X|[]], [N*X]).
 multList(N, [X|T], [N*X|T2]):- number(N), multList(N, T, T2), !.
 
+
+scalemonomial(K1,K2,K3):-
+    number(K1),number(K2),!,K3 is K1*K2.
+%M2 e a constante aqui
+scalemonomial(M1,M2,M3):-
+    monparts(M1,K1,XExp),
+    number(M2),
+    K3 is K1*M2,
+    aux_addmonomial(K3,XExp,M3).
+
+%scalelist(N, L, NL):- list2poly(L, PL), scalemonomial(PL,N,SPL), poly2list(SPL,NL).
+
 %recebe um polinomio, transforma em lista de monomios, faz a multiplicaçao e transforma a lista em porlinomio.
-scalepoly(P, N, NP):- poly2list(P, L), multList(N, L, NL), list2poly(NL, NP),!. %aqui devia dar simpoly no final quando o simpoly ficar arranjado
+scalepoly(P, N, NP):- poly2list(P, L), scalelist(N, L, NL), list2poly(NL, NP),!. %aqui devia dar simpoly no final quando o simpoly ficar arranjado
