@@ -1,20 +1,27 @@
+/*
+  Codigo baseado nos slides das aulas teoricas
+*/
+
 /* definitions */
 pvars([a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z]).
 pvar(X) :- pvars(V), member(X,V).
 
 power(X):-pvar(X),!.
 power(X^Y):-pvar(X),integer(Y),Y>1,!.
+power(-X^Y):-pvar(X),integer(Y),Y>1,!.
 
 coefficient(K):-number(K).
 
 monomial(X):-pvar(X),!.
+monomial(-X):-pvar(X),!.
 monomial(N):-number(N),!.
-monomial(-N):-number(N),!. %adicionei o caso negativo de um monomial
+monomial(-N):-number(N),!.
 monomial(X):-power(X),!.
 monomial(K*X):-coefficient(K),power(X),!.
 monomial(K*X):-coefficient(K),pvar(X),!.
 
 polynomial(M):-monomial(M),!.
+polynomial(-M):-monomial(-M),!.
 polynomial(P+M):-monomial(M),polynomial(P),!.
 polynomial(P-M):-monomial(-M),polynomial(P),!.
 
@@ -26,7 +33,6 @@ poly2listaux(0+P,[P]).
 poly2listaux(Y-X,[-X|Y1]):-poly2listaux(Y,Y1),!.
 poly2listaux(Y+X,[X|Y1]):-poly2listaux(Y,Y1),!.
 
-
 simpoly(M,M2):-monomial(M),simmon(M,M2),!.
 simpoly(P+0,P):-!.
 simpoly(0+P,P):-monomial(P),!.
@@ -35,6 +41,15 @@ simpoly(P+M,P2+M3):-
     delmonomial(P,XExp,M2,P2),!,
     addmonomial(M,M2,M3).
 simpoly(P+M,P2+M2):-simpoly(P,P2),simmon(M,M2),!.
+
+simpoly(P-0,P):-!.
+simpoly(0-P,-P):-monomial(-P),!.
+simpoly(P-M,P2-M3):-
+    monparts(M,_,XExp),
+    delmonomial(P,XExp,M2,P2),!,
+    submonomial(M,M2,M3).
+simpoly(P-M,P2-M2):-simpoly(P,P2),simmon(M,M2),!.
+
 
 simmon(1*P,P):-power(P),!.
 simmon(0*_,0):-!.
@@ -57,6 +72,13 @@ addmonomial(M1,M2,M3):-
     K3 is K1+K2,
     aux_addmonomial(K3,XExp,M3).
 
+submonomial(K1,K2,K3):- number(K1),number(K2),!,K3 is K1-K2.
+submonomial(M1,M2,M3):-
+    monparts(M1,K1,XExp),
+    monparts(M2,K2,XExp),
+    K3 is K1-K2,
+    aux_addmonomial(K3,XExp,M3).
+
 aux_addmonomial(K,indep,K):-!.
 aux_addmonomial(0,_,0):-!.
 aux_addmonomial(1,XExp,XExp):-!.
@@ -67,24 +89,27 @@ list2poly([P],P):-monomial(P), !.
 list2poly([P|L1], M+P):-list2poly(L1,M),!.
 
 %simplifica uma lista de monomios
-simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
+simpoly_list(V,X) :- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
 
 %soma de dois polinomios
-addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
+addpoly(X,Y,Z) :- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
 
-%muliplica uma lista por um numero N
 scalelist(0, _, [0]).
-scalelist(N, [X|[]], [R]):- number(N), scalemonomial(X,N,R),!.
-scalelist(N, [X|T], [R|T2]):- number(N), scalemonomial(X,N,R), scalelist(N, T, T2),!.
+scalelist(N, [X|[]], [R]):-
+    number(N),
+    scalemonomial(X,N,R),!.
+scalelist(N, [X|T], [R|T2]):-
+    number(N),
+    scalemonomial(X,N,R),
+    scalelist(N, T, T2),!.
 
 scalemonomial(K1,K2,K3):-
     number(K1),number(K2),!,K3 is K1*K2.
-scalemonomial(M1,M2,M3):- %M2 e a constante
+scalemonomial(M1,M2,M3):-
     monomial(M1),
     monparts(M1,K1,XExp),
     number(M2),
     K3 is K1*M2,
     aux_addmonomial(K3,XExp,M3).
 
-%recebe um polinomio, transforma em lista de monomios, faz a multiplicaçao e transforma a lista em porlinomio.
-scalepoly(P, N, NP):- poly2list(P, L), scalelist(N, L, NL), list2poly(NL, NP),!. %aqui devia dar simpoly no final quando o simpoly ficar arranjado
+scalepoly(P, N, NP):- poly2list(P, L), scalelist(N, L, NL), list2poly(NL, NP),!.
