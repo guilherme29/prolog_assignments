@@ -13,9 +13,7 @@ Prolog is intended primarily as a declarative programming language: the program 
 terms of **relations**, represented as **facts** and **rules**.
 A computation is initiated by running a query over these relations.
 
-Learn more about [The Construction and Evaluation of a Prolog Techniques Editor][1]
-
-[1]:(https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/)
+Learn more about [The Construction and Evaluation of a Prolog Techniques](https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/)
 
 In this case the program was tested with the software: SWI-Prolog 7.6.4 (via terminal)
 
@@ -25,11 +23,11 @@ A program made for a college project by three students
 of computer science from Faculty of Science of Port University
 
 
-| Name            | University  | Country  |
-| --------------- |:-----------:|--------: |
-| Guilherme Amado | U.Porto     | Portugal |
-| Joao Vasco      | U.Porto     | Portugal |
-| Jose Pedro      | U.Porto     | Portugal |
+| Name            | University       | Country  |
+| --------------- |:----------------:|--------: |
+| Guilherme Amado | [U.Porto][1]     | Portugal |
+| João Vasco      | [U.Porto][1]     | Portugal |
+| José Pedro      | [U.Porto][1]     | Portugal |
 
 ## Some test cases (Querys)
 
