@@ -1,7 +1,7 @@
-#Logic Programing - Assignment 1
+# Logic Programing - Assignment 1
     A program that handles problems with polynomials and tests them in specific cases, such as transforming a polynomial into a list of monomials, simplifying a polynomial, summing two polynomials...
 
-##About the Language
+## About the Language
     Programming Language Implemented: Prolog
 
     Prolog is a logic programming language associated with artificial intelligence and computational linguistics.
@@ -13,7 +13,7 @@
 
     In this case the program was tested with the software: SWI-Prolog 7.6.4 (via terminal)
 
-##Made by
+## Made by
 
     A program made for a college project by three students of computer science from Faculty of Science of Port University
 
@@ -24,7 +24,7 @@
     | Joao Vasco      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
     | Jose Pedro      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
 
-##Some test cases
+## Some test cases
 
     ```
       ?- poly2list(3*x^2+4*y-z+4*z^2, P).
