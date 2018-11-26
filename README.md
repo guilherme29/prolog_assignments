@@ -1,11 +1,48 @@
-# prolog_trabalho1
-First assignment from logic programming class
+#Logic Programing - Assignment 1
+    A program that handles problems with polynomials and tests them in specific cases, such as transforming a polynomial into a list of monomials, simplifying a polynomial, summing two polynomials...
 
-## TO DO:
-  ⋅⋅⋅Tratar dos casos negativos(ja implementei na parte dos monomios)
+##About the Language
+    Programming Language Implemented: Prolog
 
-  ⋅⋅⋅CASO_A_VER: quando temos um monomio do tipo 4*x, tb podemos afirmar que um monomio é do genero x*y, logo devia dar true mas da false...
+    Prolog is a logic programming language associated with artificial intelligence and computational linguistics.
 
-  ⋅⋅⋅ o addpoly não funciona direito para casos dos género 1+2+3+4. a recursividade não está a funcionar corretamente.
+    Prolog has its roots in first-order logic, a formal logic, and unlike many other programming languages, Prolog is intended primarily as a declarative programming language: the program logic is expressed in terms of relations, represented as facts and rules. A computation is initiated by running a query over these relations.
 
-Assinado - Ze
+    Learn more about: [The Construction and Evaluation of a Prolog Techniques Editor](https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/ "Tutorial")
+
+
+    In this case the program was tested with the software: SWI-Prolog 7.6.4 (via terminal)
+
+##Made by
+
+    A program made for a college project by three students of computer science from Faculty of Science of Port University
+
+
+    | Name            | University                                                 | Country  |
+    | --------------- |:----------------------------------------------------------:|--------: |
+    | Guilherme Amado | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
+    | Joao Vasco      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
+    | Jose Pedro      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
+
+##Some test cases
+
+    ```
+      ?- poly2list(3*x^2+4*y-z+4*z^2, P).
+      P = [3*x^2, 4*y, -z, 4*z^2].
+
+      ? - addpoly(2*x+y, 4*y, P).
+      P = 2*x+5*y.
+
+      ? - scalepoly(2*y+5*x+6*x^2, 6, NP).
+      NP = 36*x^2+30*x+12*y.
+
+      ? - monomial(x^2).
+      true.
+
+      ? - polynomial(x^2-y+2*x).
+      true.
+
+      ? - polynomial(2*x^2).
+      true.
+
+    ```
