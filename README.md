@@ -23,11 +23,13 @@ A program made for a college project by three students
 of computer science from Faculty of Science of Port University
 
 
-| Name            | University       | Country  |
-| --------------- |:----------------:|--------: |
-| Guilherme Amado | [U.Porto][1]     | Portugal |
-| João Vasco      | [U.Porto][1]     | Portugal |
-| José Pedro      | [U.Porto][1]     | Portugal |
+| Name            | University    | Country  |
+| --------------- |:-------------:|--------: |
+| Guilherme Amado | [FCUP][1]     | Portugal |
+| João Vasco      | [FCUP][1]     | Portugal |
+| José Pedro      | [FCUP][1]     | Portugal |
+
+[1]: https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL
 
 ## Some test cases (Querys)
 
