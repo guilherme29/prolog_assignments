@@ -1,12 +1,17 @@
 # Logic Programing - Assignment 1
-    A program that handles problems with polynomials and tests them in specific cases, such as transforming a polynomial into a list of monomials, simplifying a polynomial, summing two polynomials...
+    A program that handles problems with polynomials and tests them in specific cases,
+    such as transforming a polynomial into a list of monomials,
+    simplifying a polynomial, summing two polynomials...
 
 ## About the Language
     Programming Language Implemented: Prolog
 
     Prolog is a logic programming language associated with artificial intelligence and computational linguistics.
 
-    Prolog has its roots in first-order logic, a formal logic, and unlike many other programming languages, Prolog is intended primarily as a declarative programming language: the program logic is expressed in terms of relations, represented as facts and rules. A computation is initiated by running a query over these relations.
+    Prolog has its roots in first-order logic, a formal logic, and unlike many other programming languages,
+    Prolog is intended primarily as a declarative programming language: the program logic is expressed in
+    terms of relations, represented as facts and rules.
+    A computation is initiated by running a query over these relations.
 
     Learn more about: [The Construction and Evaluation of a Prolog Techniques Editor](https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/ "Tutorial")
 
@@ -15,18 +20,19 @@
 
 ## Made by
 
-    A program made for a college project by three students of computer science from Faculty of Science of Port University
+    A program made for a college project by three students
+    of computer science from Faculty of Science of Port University
 
 
-    | Name            | University                                                 | Country  |
-    | --------------- |:----------------------------------------------------------:|--------: |
-    | Guilherme Amado | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
-    | Joao Vasco      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
-    | Jose Pedro      | [U.Porto](https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL)  | Portugal |
+    | Name            | University  | Country  |
+    | --------------- |:-----------:|--------: |
+    | Guilherme Amado | U.Porto     | Portugal |
+    | Joao Vasco      | U.Porto     | Portugal |
+    | Jose Pedro      | U.Porto     | Portugal |
 
 ## Some test cases
 
-    ```
+    ```perl
       ?- poly2list(3*x^2+4*y-z+4*z^2, P).
       P = [3*x^2, 4*y, -z, 4*z^2].
 
@@ -46,3 +52,6 @@
       true.
 
     ```
+
+Second part of the project is under construction.
+Link for second part: **COMMING SOON**
