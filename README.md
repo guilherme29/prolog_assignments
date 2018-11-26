@@ -13,8 +13,9 @@
     terms of relations, represented as facts and rules.
     A computation is initiated by running a query over these relations.
 
-    Learn more about: [The Construction and Evaluation of a Prolog Techniques Editor](https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/ "Tutorial")
+    Learn more about [The Construction and Evaluation of a Prolog Techniques Editor][1]
 
+    [1]:(https://www.doc.gold.ac.uk/~mas02gw/prolog_tutorial/prologpages/ "Tutorial")
 
     In this case the program was tested with the software: SWI-Prolog 7.6.4 (via terminal)
 
@@ -32,7 +33,7 @@
 
 ## Some test cases
 
-    ```perl
+    ```Perl
       ?- poly2list(3*x^2+4*y-z+4*z^2, P).
       P = [3*x^2, 4*y, -z, 4*z^2].
 
