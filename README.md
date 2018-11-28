@@ -55,5 +55,3 @@ of computer science from Faculty of Science of Port University
 ```
 
 Second part of the project is under construction.
-
-Link for second part: **COMMING SOON**
