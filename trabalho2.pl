@@ -1,21 +1,24 @@
 
 %:- [trabalho1].
 
-polynomial --> polynomial,plus,monomial;
-	       polynomial,minus,monomial;
-	       monomial;
-	       minus,monomial.
-
-monomial(V,C,P) --> variable(V);
-		    coefficient(C);
-		    variable(V), raise, power(P);
-		    coefficient(C), mult, variable(V);
-		    coefficient(C), mult, variable(V), raise, power(P).
-
 plus--> [plus].
 minus-->[minus].
 mult--> [times].
 raise-->[raised],[to].
+
+
+polynomial(P+M) --> polynomial(P), plus, monomial(M).
+polynomial(P-M) --> polynomial(P), minus, monomial(M).
+polynomial(M)   --> monomial(M).
+polynomial(-M)  --> minus, monomial(M).
+
+
+monomial(V) -->     variable(V) ;
+		    coefficient(V).
+monomial(V^P) -->   variable(V), raise, power(P).
+monomial(C*V) -->   coefficient(C), mult, variable(V).
+monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P).
+
 
 variable(V)-->[a], {V = a};
 	      [b], {V = b};
