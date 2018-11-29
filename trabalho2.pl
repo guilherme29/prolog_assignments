@@ -13,10 +13,10 @@ polynomial(M)   --> monomial(M).
 polynomial(-M)  --> minus, monomial(M).
 
 
-monomial(V) -->     variable(V) ;
+monomial(V)     --> variable(V) ;
 		    coefficient(V).
-monomial(V^P) -->   variable(V), raise, power(P).
-monomial(C*V) -->   coefficient(C), mult, variable(V).
+monomial(V^P)   --> variable(V), raise, power(P).
+monomial(C*V)   --> coefficient(C), mult, variable(V).
 monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P).
 
 
