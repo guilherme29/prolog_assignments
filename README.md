@@ -20,7 +20,7 @@ In this case the program was tested with the software: SWI-Prolog 7.6.4 (via ter
 ## Made by
 
 A program made for a college project by three students
-of computer science from Faculty of Science of Port University
+of computer science from Faculty of Science of University of Porto
 
 
 | Name            | University    | Country  |
