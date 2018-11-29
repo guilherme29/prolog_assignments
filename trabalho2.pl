@@ -1,46 +1,49 @@
 
-:- [trabalho1].
+%:- [trabalho1].
 
-polynomial-->polynomial,plus,monomial;
-	     polynomial,minus,monomial;
-	     monomial;
-	     minus,monomial.
+polynomial --> polynomial,plus,monomial;
+	       polynomial,minus,monomial;
+	       monomial;
+	       minus,monomial.
 
-monomial-->variable(X);
-	   coefficient;
-	   variable(X),raise,power;
-	   coefficient,mult,variable(X),
-	   coefficient,mult,variable(X),raise,power.
+monomial(V,C,P) --> variable(V);
+		    coefficient(C);
+		    variable(V), raise, power(P);
+		    coefficient(C), mult, variable(V);
+		    coefficient(C), mult, variable(V), raise, power(P).
 
 plus--> [plus].
 minus-->[minus].
 mult--> [times].
 raise-->[raised],[to].
 
-variable(X)-->[a], {X = a};
-	      [b], {X = b};
-	      [c], {X = c};
-	      [d], {X = d};
-	      [e], {X = e};
-	      [f], {X = f};
-	      [g], {X = g};
-	      [h], {X = h};
-	      [i], {X = i};
-	      [j], {X = j};
-	      [k], {X = k};
-	      [l], {X = l};
-	      [m], {X = m};
-	      [n], {X = n};
-	      [o], {X = o};
-	      [p], {X = p};
-	      [q], {X = q};
-	      [r], {X = r};
-	      [s], {X = s};
-	      [t], {X = t};
-	      [u], {X = u};
-	      [v], {X = v};
-	      [w], {X = w};
-	      [x], {X = x};
-	      [y], {X = y};
-	      [z], {X = z};
+variable(V)-->[a], {V = a};
+	      [b], {V = b};
+	      [c], {V = c};
+	      [d], {V = d};
+	      [e], {V = e};
+	      [f], {V = f};
+	      [g], {V = g};
+	      [h], {V = h};
+	      [i], {V = i};
+	      [j], {V = j};
+	      [k], {V = k};
+	      [l], {V = l};
+	      [m], {V = m};
+	      [n], {V = n};
+	      [o], {V = o};
+	      [p], {V = p};
+	      [q], {V = q};
+	      [r], {V = r};
+	      [s], {V = s};
+	      [t], {V = t};
+	      [u], {V = u};
+	      [v], {V = v};
+	      [w], {V = w};
+	      [x], {V = x};
+	      [y], {V = y};
+	      [z], {V = z}.
 	      
+coefficient(C) --> [C], {number(C)}.
+power(P) --> [P], {number(P)}.
+
