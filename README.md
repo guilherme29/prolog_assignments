@@ -33,7 +33,7 @@ of computer science from Faculty of Science of Port University
 
 ## Some test cases (Querys)
 
-```Perl
+```Prolog
   ?- poly2list(3*x^2+4*y-z+4*z^2, P).
   P = [3*x^2, 4*y, -z, 4*z^2].
 
