@@ -7,17 +7,17 @@ mult--> [times].
 raise-->[raised],[to].
 
 
-polynomial(P+M) --> polynomial(P), plus, monomial(M).
-polynomial(P-M) --> polynomial(P), minus, monomial(M).
-polynomial(M)   --> monomial(M).
-polynomial(-M)  --> minus, monomial(M).
+polynomial(P+M) --> polynomial(P), plus, monomial(M), !.
+polynomial(P-M) --> polynomial(P), minus, monomial(M), !.
+polynomial(M)   --> monomial(M), !.
+polynomial(-M)  --> minus, monomial(M), !.
 
 
-monomial(V)     --> variable(V) ;
+monomial(V)     --> variable(V);
 		    coefficient(V).
-monomial(V^P)   --> variable(V), raise, power(P).
-monomial(C*V)   --> coefficient(C), mult, variable(V).
-monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P).
+monomial(V^P)   --> variable(V), raise, power(P), !.
+monomial(C*V)   --> coefficient(C), mult, variable(V), !.
+monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P),!.
 
 
 variable(V)-->[a], {V = a};
@@ -47,6 +47,17 @@ variable(V)-->[a], {V = a};
 	      [y], {V = y};
 	      [z], {V = z}.
 	      
-coefficient(C) --> [C], {number(C)}.
+%coefficient(C) --> [C], {number(C)}.
 power(P) --> [P], {number(P)}.
 
+coefficient(C)-->[zero], {C = 0};
+		 [one],  {C = 1};
+		 [two],  {C = 2};
+		 [three],{C = 3};
+		 [four], {C = 4};
+		 [five], {C = 5};
+		 [six],  {C = 6};
+		 [seven],{C = 7};
+		 [eight],{C = 8};
+		 [nine], {C = 9};
+		 [ten],  {C = 10}.
