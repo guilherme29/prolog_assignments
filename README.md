@@ -31,7 +31,7 @@ of computer science from Faculty of Science of Port University
 
 [1]: https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL
 
-## Some test cases (Querys)
+## Some test cases (Queries)
 
 ```Prolog
   ?- poly2list(3*x^2+4*y-z+4*z^2, P).
