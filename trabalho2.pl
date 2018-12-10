@@ -1,6 +1,10 @@
 
 %:- [trabalho1].
 
+polyplay :- write("Ola FAgotes"), nl, read(X), write(X), nl, polyplay.
+
+
+
 plus  --> [plus].
 minus --> [minus].
 mult  --> [times].
@@ -111,6 +115,3 @@ list2number(LN, N) :- atomic_list_concat(LN, S), atom_number(S, N).
 %predicados feitos pelo professor!!
 number(C)-->units(C).
 number(N)-->tens(T),units(C),{N is T+C}.
-
-
-
