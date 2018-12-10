@@ -42,7 +42,7 @@ poly2listaux(Y-X,[-X|Y1]):-poly2listaux(Y,Y1),!.
 poly2listaux(Y+X,[X|Y1]):-poly2listaux(Y,Y1),!.
 
 %simplifica um polinomio
-simpoly(M,M2):-monomial(M),simmon(M,M2),!.
+/*simpoly(M,M2):-monomial(M),simmon(M,M2),!.
 simpoly(P+0,P):-!.
 simpoly(0+P,P):-monomial(P),!.
 simpoly(P+M,P2+M3):-
@@ -58,6 +58,8 @@ simpoly(P-M,P2-M3):-
     delmonomial(P,XExp,M2,P2),!,
     submonomial(M,M2,M3).
 simpoly(P-M,P2-M2):-simpoly(P,P2),simmon(M,M2),!.
+*/
+
 
 %simplifica um monomio
 simmon(1*P,P):-power(P),!.
@@ -110,7 +112,14 @@ list2poly([P],P):-monomial(P), !.
 list2poly([P|L1], M+P):-list2poly(L1,M),!.
 
 %simplifica uma lista de monomios
-simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
+%simpoly_list(V,X):- list2poly(V,Y), simpoly(Y,Z), poly2list(Z,X).
+simpoly_list([],[]).
+simpoly_list([X|L], L2) :- add_poly2list(X, L, 0, L3), simpoly_list(L3, L2),!.
+simpoly_list([X|L], [R|L2]) :- simmon(X, X1), add_poly2list(X1, L, R, L3), simpoly_list(L3,L2), !.
+
+add_poly2list(X, [], X, []).
+add_poly2list(X, [Y|L1], R1, L2) :- addmonomial(X, Y, R), add_poly2list(R, L1, R1, L2), !.
+add_poly2list(X, [Y|L1], R, [Y|L2]) :- add_poly2list(X,L1,R,L2),!.
 
 %soma de dois polinomios
 addpoly(X,Y,Z):- poly2list(X+Y,L), simpoly_list(L,T), list2poly(T,Z), !.
