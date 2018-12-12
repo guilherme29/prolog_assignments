@@ -1,8 +1,29 @@
-
+/*
 %:- [trabalho1].
 
-polyplay :- write("Ola FAgotes"), nl, read(X), write(X), nl, polyplay.
+	text_to_string(texto, stringFinal) --> converte um dado texto numa so string
+	term_string(termo, stringFinal) --> transforma um dado termo numa term_string
+	split_string(StringInicial, CharQueQueremosSeparar,  PadingChars, StringFinal) --> converte uma string texto nums lista de strings (QUEREMOS ISTO)
 
+*/
+
+polyplay :- write("Hello there...."), nl, program.
+
+program :- read(X), read_string(X, "\n", "\r", -1, S), split_string(S, " ", "", L), write(L), nl.
+
+expr(X, R) :- polynomial(X,R).
+
+polynomial(P+M) --> polynomial(P), plus, monomial(M), !.
+polynomial(P-M) --> polynomial(P), minus, monomial(M), !.
+polynomial(M)   --> monomial(M), !.
+polynomial(-M)  --> minus, monomial(M), !.
+
+monomial(V)     --> variable(V);
+		    coefficient(V).
+monomial(V^P)   --> variable(V), raise, power(P), !.
+monomial(C*V)   --> coefficient(C), mult, variable(V), !.
+monomial(C*V)   --> number(C), mult, variable(V).
+monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P),!.
 
 
 plus  --> [plus].
@@ -53,19 +74,6 @@ test --> (zero; units; tens).
 test --> (units; tens), test2.
 test2  --> hundreds; thousands; millions.
 */
-
-polynomial(P+M) --> polynomial(P), plus, monomial(M), !.
-polynomial(P-M) --> polynomial(P), minus, monomial(M), !.
-polynomial(M)   --> monomial(M), !.
-polynomial(-M)  --> minus, monomial(M), !.
-
-
-monomial(V)     --> variable(V);
-		    coefficient(V).
-monomial(V^P)   --> variable(V), raise, power(P), !.
-monomial(C*V)   --> coefficient(C), mult, variable(V), !.
-monomial(C*V)   --> number(C), mult, variable(V).
-monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P),!.
 
 
 variable(V) --> [a], {V = a};

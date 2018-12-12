@@ -81,15 +81,17 @@ delmonomial(P+M,X,M,P):- monomial(M),monparts(M,_,X),!.
 delmonomial(P+M2,X,M,P2+M2):- delmonomial(P,X,M,P2).
 
 %soma de dois monomios
-addmonomial(K1,K2,K3):-
+addmonomial(K1,K2,Res):-
     number(K1),
-    number(K2), !,
-    K3 is K1+K2.
+    number(K2),
+    K3 is K1+K2,
+    truncate(K3, 2, Res).
 addmonomial(M1,M2,M3):-
     monparts(M1,K1,XExp),
     monparts(M2,K2,XExp),
     K3 is K1+K2,
-    aux_addmonomial(K3,XExp,M3).
+    truncate(K3, 2, Res),
+    aux_addmonomial(Res,XExp,M3).
 
 %subtracao de dois monomios
 submonomial(K1,K2,K3):-
