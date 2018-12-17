@@ -21,40 +21,36 @@ polyplay :-
     read(X),
     split_string(X, " ", "", L),
     string_list_to_atom(L, LA),
-    opcao(LA, B),
-    B is 1,
-    sepSH(LA, NewLA),
-    convert_poly(NewLA, [], P),
-    concat(P, LP)
+    option(LA, B),                  %escolhe a opçao (show, add, simplify, multiply,...)
+    B is 1,                        %se tiver uma dessas opçoes continua o programa, senao falha e vai para o caso de erro
+    sepSH(LA, NewLA), write(LA),             %separa da lista(LA) o nome da opçao e cria uma nova lista de atoms(NewLA)
+    atoms_to_numbers(NewLA, [], P),    %converte uma lista de atoms em texto para uma lista de atoms em numeros e simbolos
+    atomic_list_concat(P, "", LP), %concatena os elementos da lista P e transforma-os numa expressao(Polinomio)
     write(LP), nl.
-polyplay :- write("Error, something is not right, you dumb fuck :^) ").
+
+polyplay :- write("Error, something is not right, you dumb fuck :^) "). %caso erro, imprime menssagem de erro
 
 %converçao do texto num polinomio
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao ====> IDEIA
-convert_poly([X], RPoly, P) :- units(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
-convert_poly([X], RPoly, P) :- simbol(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
-convert_poly([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),reverse(Poly2, P), !.
+atoms_to_numbers([X], RPoly, P) :- units(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
+atoms_to_numbers([X], RPoly, P) :- simbol(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
+atoms_to_numbers([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),reverse(Poly2, P), !.
 
-convert_poly([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
-convert_poly([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
-convert_poly([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
-
-concat([X], [X]):-!.
-concat([X|T], [X|T2]) :- concat(T,T2), !.
-
+atoms_to_numbers([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
+atoms_to_numbers([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
+atoms_to_numbers([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 
 %separaçao do primeiro elemento(show) com os restantes
 sepSH([X|T], L) :- sep(T, L).
-
 sep([X], [X]):-!.
 sep([X|T], [X|T2]):- sep(T, T2),!.
 
-% se tiver a palavra show como input entao vamos fazer a conversao de palavras para numeros
-opcao([X|_], 1) :- X = show.
-opcao([X|_], 1) :- X = multiply.
-opcao([X|_], 1) :- X = add.
-opcao([X|_], 1) :- X = simplify.
-opcao([X|_], 0).
+% se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
+option([X|_], 1) :- X = show.
+option([X|_], 1) :- X = multiply.
+option([X|_], 1) :- X = add.
+option([X|_], 1) :- X = simplify.
+option([X|_], 0).
 
 
 %converte uma string para uma lista de atoms
