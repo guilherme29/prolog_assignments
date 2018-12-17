@@ -1,4 +1,4 @@
-# Logic Programing - Assignment 1
+# Logic Programing - Assignment
 A program that handles problems with polynomials and tests them in specific cases,
 such as transforming a polynomial into a list of monomials,
 simplifying a polynomial, summing two polynomials...
