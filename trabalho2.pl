@@ -1,17 +1,57 @@
-/*
-%:- [trabalho1].
+/*-------- experiencias com prolog --------------
+user_input :-
+    repeat,
+    read(Line),
+		split_string(X, " ", "", L),
+		string_list_to_atom(L, LA),
 
-	text_to_string(texto, stringFinal) --> converte um dado texto numa so string
-	term_string(termo, stringFinal) --> transforma um dado termo numa term_string
-	split_string(StringInicial, CharQueQueremosSeparar,  PadingChars, StringFinal) --> converte uma string texto nums lista de strings (QUEREMOS ISTO)
-
+    (   Line = quit ->  write('Finished'), nl, !, true ; write("Continue"), fail  ).
 */
 
-polyplay :- write("Hello there...."), nl, program.
+%atom_concat para substituir o P+M
 
-program :- read(X), read_string(X, "\n", "\r", -1, S), split_string(S, " ", "", L), write(L), nl.
+/* ----- declaraçao de bibliotecas ------*/
+:-use_module(library(clpb)). % biblioteca de expressoes satesfaziveis (Expressoes Booleanas)
 
-expr(X, R) :- polynomial(X,R).
+
+
+%iniciamento do programa
+polyplay :-
+    write("Hello there...."), nl,
+    read(X),
+    split_string(X, " ", "", L),
+    string_list_to_atom(L, LA),
+    if_show(LA, B),
+    B is 1,
+    sepSH(LA, NewLA),
+    convertPoly(NewLA, Poly),
+    write(Poly), nl.
+polyplay :- write("Error, something is not right, you idiot :) ").
+
+%converçao do texto num polinomio
+%converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao ====> IDEIA
+convertPoly([X|T], Poly) :- units(X, L, []), addlast(L, Poly).
+convertPoly([X|T], Poly) :- simbol(X).
+convertPoly([X|T], Poly) :- units(X).
+
+%adiciona elemento no final da lista
+addlast([X|_], [X]) :- !.
+addlast([X|_], [_|Z]) :- addlast([X|_],Z),!.
+
+%separaçao do primeiro elemento(show) com os restantes
+sepSH([X|T], L) :- sep(T, L).
+
+sep([X], [X]):-!.
+sep([X|T], [X|T2]):- sep(T, T2),!.
+
+% se tiver a palavra show como input entao vamos fazer a conversao de palavras para numeros
+if_show([X|_], 1) :- X = show.
+if_show([X|_], 0) :- X \= show.
+
+%converte uma string para uma lista de atoms
+string_list_to_atom([X], [A]) :- string_to_atom(X, A),!.
+string_list_to_atom([X|L1], [A|L2]) :- string_to_atom(X, A), string_list_to_atom(L1, L2),!.
+
 
 polynomial(P+M) --> polynomial(P), plus, monomial(M), !.
 polynomial(P-M) --> polynomial(P), minus, monomial(M), !.
@@ -33,15 +73,20 @@ raise --> [raised],[to].
 
 zero(Z) --> [zero], {Z = 0}.
 
-units(C) --> [one],  {C = 1};
-	     [two],  {C = 2};
-	     [three],{C = 3};
-	     [four], {C = 4};
-	     [five], {C = 5};
-	     [six],  {C = 6};
-	     [seven],{C = 7};
-	     [eight],{C = 8};
-	     [nine], {C = 9}.
+simbol(S) --> [+], {S = plus};
+              [-], {S = minus};
+              [*], {S = times};
+              [^], {S = raised_to}.
+
+units(C) --> [1],    {C = one};
+	           [2],    {C = two};
+	           [3],    {C = three};
+	           [4],    {C = four};
+	           [5],    {C = five};
+	           [6],    {C = six};
+	           [7],    {C = seven};
+	           [8],    {C = eight};
+	           [9],    {C = nine}.
 
 til20(C) --> [ten],      {C = 10};
 	     [eleven],   {C = 11};
