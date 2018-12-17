@@ -11,7 +11,7 @@ user_input :-
 %atom_concat para substituir o P+M
 
 /* ----- declaraçao de bibliotecas ------*/
-:-use_module(library(clpb)). % biblioteca de expressoes satesfaziveis (Expressoes Booleanas)
+%:-use_module(library(clpb)). % biblioteca de expressoes satesfaziveis (Expressoes Booleanas)
 
 
 
@@ -21,22 +21,27 @@ polyplay :-
     read(X),
     split_string(X, " ", "", L),
     string_list_to_atom(L, LA),
-    if_show(LA, B),
+    opcao(LA, B),
     B is 1,
     sepSH(LA, NewLA),
-    convertPoly(NewLA, Poly),
-    write(Poly), nl.
-polyplay :- write("Error, something is not right, you idiot :) ").
+    convert_poly(NewLA, [], P),
+    concat(P, LP)
+    write(LP), nl.
+polyplay :- write("Error, something is not right, you dumb fuck :^) ").
 
 %converçao do texto num polinomio
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao ====> IDEIA
-convertPoly([X|T], Poly) :- units(X, L, []), addlast(L, Poly).
-convertPoly([X|T], Poly) :- simbol(X).
-convertPoly([X|T], Poly) :- units(X).
+convert_poly([X], RPoly, P) :- units(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
+convert_poly([X], RPoly, P) :- simbol(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
+convert_poly([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),reverse(Poly2, P), !.
 
-%adiciona elemento no final da lista
-addlast([X|_], [X]) :- !.
-addlast([X|_], [_|Z]) :- addlast([X|_],Z),!.
+convert_poly([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
+convert_poly([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
+convert_poly([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), convert_poly(T, Poly2, P), !.
+
+concat([X], [X]):-!.
+concat([X|T], [X|T2]) :- concat(T,T2), !.
+
 
 %separaçao do primeiro elemento(show) com os restantes
 sepSH([X|T], L) :- sep(T, L).
@@ -45,8 +50,12 @@ sep([X], [X]):-!.
 sep([X|T], [X|T2]):- sep(T, T2),!.
 
 % se tiver a palavra show como input entao vamos fazer a conversao de palavras para numeros
-if_show([X|_], 1) :- X = show.
-if_show([X|_], 0) :- X \= show.
+opcao([X|_], 1) :- X = show.
+opcao([X|_], 1) :- X = multiply.
+opcao([X|_], 1) :- X = add.
+opcao([X|_], 1) :- X = simplify.
+opcao([X|_], 0).
+
 
 %converte uma string para uma lista de atoms
 string_list_to_atom([X], [A]) :- string_to_atom(X, A),!.
@@ -82,7 +91,7 @@ units(C) --> [1],    {C = one};
 	           [2],    {C = two};
 	           [3],    {C = three};
 	           [4],    {C = four};
-	           [5],    {C = five};
+	           [5],    {C = five},!;
 	           [6],    {C = six};
 	           [7],    {C = seven};
 	           [8],    {C = eight};
