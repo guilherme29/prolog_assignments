@@ -1,12 +1,4 @@
-/*-------- experiencias com prolog --------------
-user_input :-
-    repeat,
-    read(Line),
-		split_string(X, " ", "", L),
-		string_list_to_atom(L, LA),
-
-    (   Line = quit ->  write('Finished'), nl, !, true ; write("Continue"), fail  ).
-
+/*
 Exemplos e input que podemos ter:
   show two plus x squared
   > 2 + x^2
@@ -35,15 +27,7 @@ Exemplos e input que podemos ter:
 
   forget P1 and show stored polynomials
   > P2 = 6 + 3*x^2
-
-
 */
-
-%atom_concat para substituir o P+M
-
-/* ----- declaraçao de bibliotecas ------*/
-%:-use_module(library(clpb)). % biblioteca de expressoes satesfaziveis (Expressoes Booleanas)
-
 :-[trabalho1].
 
 %iniciamento do programa
@@ -61,6 +45,7 @@ shw_opt(L) :- remove_ele(by, L, NL), atoms_to_numbers(NL, [], P), atomic_list_co
 
 mul_opt([X|T]) :- remove_ele(by, T, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), atom_to_number(X, Num), term_string(K, NP), scalepoly(K, Num, NNP), write(NNP).
 
+add_opt([X|T]) :- remove_ele(with, T, NL), global_variavels()
 %conversao um atom para um numero
 atom_to_number(A, N) :- units(A, [N], []), !.
 
@@ -89,7 +74,7 @@ sep([X|T], [X|T2]):- sep(T, T2),!.*/
 % se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
 option([X|T], 1) :- X = show, shw_opt(T).
 option([X|T], 1) :- X = multiply, mul_opt(T).
-option([X|_], 1) :- X = add.
+option([X|T], 1) :- X = add ,add_opt(T).
 option([X|_], 1) :- X = simplify.
 option([X|_], 0).
 
@@ -119,40 +104,40 @@ raise --> [raised],[to].
 
 zero(Z) --> [zero], {Z = 0}.
 
-simbol(S) --> [+], {S = plus};
-              [-], {S = minus};
-              [*], {S = times};
+simbol(S) --> [+], {S = plus},!;
+              [-], {S = minus},!;
+              [*], {S = times},!;
               [^], {S = raised_to}.
 
-units(C) --> [1],    {C = one};
-	           [2],    {C = two};
-	           [3],    {C = three};
-	           [4],    {C = four};
+units(C) --> [1],    {C = one},!;
+	           [2],    {C = two},!;
+	           [3],    {C = three},!;
+	           [4],    {C = four},!;
 	           [5],    {C = five},!;
-	           [6],    {C = six};
-	           [7],    {C = seven};
-	           [8],    {C = eight};
+	           [6],    {C = six},!;
+	           [7],    {C = seven},!;
+	           [8],    {C = eight},!;
 	           [9],    {C = nine}.
 
-til20(C) --> [ten],      {C = 10};
-	     [eleven],   {C = 11};
-	     [twelve],   {C = 12};
-	     [thirteen], {C = 13};
-	     [fourteen], {C = 14};
-	     [fifteen],  {C = 15};
-	     [sixteen],  {C = 16};
-	     [seventeen],{C = 17};
-	     [eighteen], {C = 18};
-	     [nineteen], {C = 19}.
+til20(C) --> [ten],      {C = 10},!;
+	           [eleven],   {C = 11},!;
+	           [twelve],   {C = 12},!;
+	           [thirteen], {C = 13},!;
+	           [fourteen], {C = 14},!;
+	           [fifteen],  {C = 15},!;
+	           [sixteen],  {C = 16},!;
+	           [seventeen],{C = 17},!;
+	           [eighteen], {C = 18},!;
+	           [nineteen], {C = 19}.
 
-tens(C)  --> [twenty], {C = 20};
-	     [thirty], {C = 30};
-	     [forty],  {C = 40};
-	     [fifty],  {C = 50};
-	     [sixty],  {C = 60};
-	     [seventy],{C = 70};
-	     [eighty], {C = 80};
-	     [ninety], {C = 90}.
+tens(C)  --> [twenty], {C = 20},!;
+	           [thirty], {C = 30},!;
+	           [forty],  {C = 40},!;
+	           [fifty],  {C = 50},!;
+	           [sixty],  {C = 60},!;
+	           [seventy],{C = 70},!;
+             [eighty], {C = 80},!;
+	           [ninety], {C = 90}.
 
 hundreds --> [hundred].
 thousands --> [thousand].
@@ -165,52 +150,43 @@ test --> (zero; units; tens).
 test --> (units; tens), test2.
 test2  --> hundreds; thousands; millions.
 */
+global_variavels(GV) --> ['P1'], {GV = 'P1'}, !;
+                         ['P2'], {GV = 'P2'}, !;
+                         ['P3'], {GV = 'P3'}, !;
+                         ['P4'], {GV = 'P4'}, !;
+                         ['P5'], {GV = 'P5'}.
 
 
-variable(V) --> [a], {V = a};
-		            [b], {V = b};
-		            [c], {V = c};
-		            [d], {V = d};
-		            [e], {V = e};
-		            [f], {V = f};
-		            [g], {V = g};
-		            [h], {V = h};
-		            [i], {V = i};
-		            [j], {V = j};
-		            [k], {V = k};
-		            [l], {V = l};
-		            [m], {V = m};
-		            [n], {V = n};
-		            [o], {V = o};
-		            [p], {V = p};
-		            [q], {V = q};
-		            [r], {V = r};
-		            [s], {V = s};
-		            [t], {V = t};
-		            [u], {V = u};
-		            [v], {V = v};
-		            [w], {V = w};
-		            [x], {V = x};
-		            [y], {V = y};
+variable(V) --> [a], {V = a},!;
+		            [b], {V = b},!;
+		            [c], {V = c},!;
+		            [d], {V = d},!;
+		            [e], {V = e},!;
+		            [f], {V = f},!;
+		            [g], {V = g},!;
+		            [h], {V = h},!;
+		            [i], {V = i},!;
+		            [j], {V = j},!;
+		            [k], {V = k},!;
+		            [l], {V = l},!;
+		            [m], {V = m},!;
+		            [n], {V = n},!;
+		            [o], {V = o},!;
+		            [p], {V = p},!;
+		            [q], {V = q},!;
+		            [r], {V = r},!;
+		            [s], {V = s},!;
+		            [t], {V = t},!;
+		            [u], {V = u},!;
+		            [v], {V = v},!;
+		            [w], {V = w},!;
+		            [x], {V = x},!;
+		            [y], {V = y},!;
 		            [z], {V = z}.
 
 %coefficient(C) --> [C], {number(C)}.
 power(P) --> [P], {number(P)}.
 
-coefficient(C)-->[zero], {C = 0};
-		 [one],  {C = 1};
-		 [two],  {C = 2};
-		 [three],{C = 3};
-		 [four], {C = 4};
-		 [five], {C = 5};
-		 [six],  {C = 6};
-		 [seven],{C = 7};
-		 [eight],{C = 8};
-		 [nine], {C = 9};
-		 [ten],  {C = 10}.
-
-list2number(LN, N) :- atomic_list_concat(LN, S), atom_number(S, N).
-
 %predicados feitos pelo professor!!
 number(C, L, [])-->units(C, L, []).
-number(N, L, [])-->tens(T, L, []),units(C, L, []),{N is T+C}.
+number(N, [Z], [])-->tens(T, [Y], []),units(C, [X], []),{Z is X+Y}.
