@@ -59,10 +59,16 @@ polyplay :- write("Error, something is not right, you dumb fuck :^) "). %caso er
 
 shw_opt(L) :- remove_ele(by, L, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), write(NP).
 
+mul_opt([X|T]) :- remove_ele(by, T, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), atom_to_number(X, Num), term_string(K, NP), scalepoly(K, Num, NNP), write(NNP).
+
+%conversao um atom para um numero
+atom_to_number(A, N) :- units(A, [N], []), !.
+
+
 %remove all intancies of that element X from the List and return a new list
-remove_ele(_, [], []).
+remove_ele(_, [], []):-!.
 remove_ele(X, [X|T], L):- remove_ele(X, T, L), !.
-remove_ele(X, [H|T], [H|L]):- remove_ele(X, T, L ).
+remove_ele(X, [H|T], [H|L]):- remove_ele(X, T, L ), !.
 
 %converçao do texto num polinomio
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao ====> IDEIA
@@ -82,7 +88,7 @@ sep([X|T], [X|T2]):- sep(T, T2),!.*/
 
 % se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
 option([X|T], 1) :- X = show, shw_opt(T).
-option([X|_], 1) :- X = multiply.
+option([X|T], 1) :- X = multiply, mul_opt(T).
 option([X|_], 1) :- X = add.
 option([X|_], 1) :- X = simplify.
 option([X|_], 0).
@@ -206,5 +212,5 @@ coefficient(C)-->[zero], {C = 0};
 list2number(LN, N) :- atomic_list_concat(LN, S), atom_number(S, N).
 
 %predicados feitos pelo professor!!
-number(C)-->units(C).
-number(N)-->tens(T),units(C),{N is T+C}.
+number(C, L, [])-->units(C, L, []).
+number(N, L, [])-->tens(T, L, []),units(C, L, []),{N is T+C}.
