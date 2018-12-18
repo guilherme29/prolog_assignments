@@ -6,6 +6,37 @@ user_input :-
 		string_list_to_atom(L, LA),
 
     (   Line = quit ->  write('Finished'), nl, !, true ; write("Continue"), fail  ).
+
+Exemplos e input que podemos ter:
+  show two plus x squared
+  > 2 + x^2
+
+  multiply three by two plus x squared
+  > 3*(2+x^2) ou seja 6+3*x^2
+
+  simplify two plus two plus one times y
+  > 2+2+1*y ou seja 4+y
+
+  show two plus x squared as P1
+  > P1=2+x^2
+
+  multiply three by P1(2+x^2)
+  > 3*P1 ou seja 6+2*x^2
+
+  multiply three by P1 as P2
+  > P2 = 3*P1
+
+  add P1 with x raised to 3
+  > P1 + x^3 ou seja 2+x^2+x^3
+
+  show stored polynomials
+  > P1 = 2+x^2
+    P2 = 6+3*x^2
+
+  forget P1 and show stored polynomials
+  > P2 = 6 + 3*x^2
+
+
 */
 
 %atom_concat para substituir o P+M
@@ -13,7 +44,7 @@ user_input :-
 /* ----- declaraçao de bibliotecas ------*/
 %:-use_module(library(clpb)). % biblioteca de expressoes satesfaziveis (Expressoes Booleanas)
 
-
+:-[trabalho1].
 
 %iniciamento do programa
 polyplay :-
@@ -21,14 +52,17 @@ polyplay :-
     read(X),
     split_string(X, " ", "", L),
     string_list_to_atom(L, LA),
-    option(LA, B),                  %escolhe a opçao (show, add, simplify, multiply,...)
-    B is 1,                        %se tiver uma dessas opçoes continua o programa, senao falha e vai para o caso de erro
-    sepSH(LA, NewLA), write(LA),             %separa da lista(LA) o nome da opçao e cria uma nova lista de atoms(NewLA)
-    atoms_to_numbers(NewLA, [], P),    %converte uma lista de atoms em texto para uma lista de atoms em numeros e simbolos
-    atomic_list_concat(P, "", LP), %concatena os elementos da lista P e transforma-os numa expressao(Polinomio)
-    write(LP), nl.
+    option(LA, B), B is 1, nl,
+    polyplay.
 
 polyplay :- write("Error, something is not right, you dumb fuck :^) "). %caso erro, imprime menssagem de erro
+
+shw_opt(L) :- remove_ele(by, L, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), write(NP).
+
+%remove all intancies of that element X from the List and return a new list
+remove_ele(_, [], []).
+remove_ele(X, [X|T], L):- remove_ele(X, T, L), !.
+remove_ele(X, [H|T], [H|L]):- remove_ele(X, T, L ).
 
 %converçao do texto num polinomio
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao ====> IDEIA
@@ -40,13 +74,14 @@ atoms_to_numbers([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), ato
 atoms_to_numbers([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 atoms_to_numbers([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 
+/*
 %separaçao do primeiro elemento(show) com os restantes
 sepSH([X|T], L) :- sep(T, L).
 sep([X], [X]):-!.
-sep([X|T], [X|T2]):- sep(T, T2),!.
+sep([X|T], [X|T2]):- sep(T, T2),!.*/
 
 % se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
-option([X|_], 1) :- X = show.
+option([X|T], 1) :- X = show, shw_opt(T).
 option([X|_], 1) :- X = multiply.
 option([X|_], 1) :- X = add.
 option([X|_], 1) :- X = simplify.
@@ -127,31 +162,31 @@ test2  --> hundreds; thousands; millions.
 
 
 variable(V) --> [a], {V = a};
-		[b], {V = b};
-		[c], {V = c};
-		[d], {V = d};
-		[e], {V = e};
-		[f], {V = f};
-		[g], {V = g};
-		[h], {V = h};
-		[i], {V = i};
-		[j], {V = j};
-		[k], {V = k};
-		[l], {V = l};
-		[m], {V = m};
-		[n], {V = n};
-		[o], {V = o};
-		[p], {V = p};
-		[q], {V = q};
-		[r], {V = r};
-		[s], {V = s};
-		[t], {V = t};
-		[u], {V = u};
-		[v], {V = v};
-		[w], {V = w};
-		[x], {V = x};
-		[y], {V = y};
-		[z], {V = z}.
+		            [b], {V = b};
+		            [c], {V = c};
+		            [d], {V = d};
+		            [e], {V = e};
+		            [f], {V = f};
+		            [g], {V = g};
+		            [h], {V = h};
+		            [i], {V = i};
+		            [j], {V = j};
+		            [k], {V = k};
+		            [l], {V = l};
+		            [m], {V = m};
+		            [n], {V = n};
+		            [o], {V = o};
+		            [p], {V = p};
+		            [q], {V = q};
+		            [r], {V = r};
+		            [s], {V = s};
+		            [t], {V = t};
+		            [u], {V = u};
+		            [v], {V = v};
+		            [w], {V = w};
+		            [x], {V = x};
+		            [y], {V = y};
+		            [z], {V = z}.
 
 %coefficient(C) --> [C], {number(C)}.
 power(P) --> [P], {number(P)}.
