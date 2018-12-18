@@ -1,0 +1,10 @@
+TODO PROLOG:
+
+-> Organizar o codigo
+-> Pensar/Fazer como cada caminho quando se escolhe uma das opçoes
+-> Armazenamento dos valores em variaveis (Ideia => variaveis globais)
+-> Predicado number consertar
+-> Ver para numeros maiores que nove
+-> Casos erro
+
+BONUS:::::> valores negativos/floats
