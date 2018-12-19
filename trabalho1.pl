@@ -42,7 +42,7 @@ poly2listaux(Y-X,[-X|Y1]):-poly2listaux(Y,Y1),!.
 poly2listaux(Y+X,[X|Y1]):-poly2listaux(Y,Y1),!.
 
 %simplifica um polinomio
-/*simpoly(M,M2):-monomial(M),simmon(M,M2),!.
+simpoly(M,M2):-monomial(M),simmon(M,M2),!.
 simpoly(P+0,P):-!.
 simpoly(0+P,P):-monomial(P),!.
 simpoly(P+M,P2+M3):-
@@ -58,8 +58,10 @@ simpoly(P-M,P2-M3):-
     delmonomial(P,XExp,M2,P2),!,
     submonomial(M,M2,M3).
 simpoly(P-M,P2-M2):-simpoly(P,P2),simmon(M,M2),!.
-*/
 
+%corrigir sistema 64-bit IEEE
+truncate(X,N,Result):- X >= 0, Result is floor(10^N*X)/10^N, !.
+truncate(X,N,Result):- X <  0, Result is ceil(10^N*X)/10^N, !.
 
 %simplifica um monomio
 simmon(1*P,P):-power(P),!.
