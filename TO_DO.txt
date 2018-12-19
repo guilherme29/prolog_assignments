@@ -1,10 +1,8 @@
 TODO PROLOG:
 
--> Organizar o codigo
--> Pensar/Fazer como cada caminho quando se escolhe uma das opçoes
--> Armazenamento dos valores em variaveis (Ideia => variaveis globais)
--> Predicado number consertar
--> Ver para numeros maiores que nove
+-> Armazenamento dos valores em variaveis (Ideia => lista com variaveis e valores tipo [P1, x+4, P2, 5+8*x^3])
+-> simplify e add options need to be done
+-> option bye to exit the program
 -> Casos erro
 
 BONUS:::::> valores negativos/floats

@@ -27,7 +27,25 @@ Exemplos e input que podemos ter:
 
   forget P1 and show stored polynomials
   > P2 = 6 + 3*x^2
+
+% Read N diagnoses and retrieve them in a list
+diagnosis(N, Diags) :-
+    diagnosis(N, [], D),
+    reverse(D, Diags).  % Assuming you want them listed in the order they were read
+
+diagnosis(N, A, Diags) :-
+    N > 0,
+    rw_diag(Diag),      % read and write one diagnosis
+    A1 = [Diag|A],
+    N1 is N - 1,
+    diagnosis(N1, A1, Diags).
+diagnosis(0, A, A).
+
+rw_diag(Diag) :-
+    readln(Diag),
+    write(Diag), nl.
 */
+
 :-[trabalho1].
 
 %iniciamento do programa
@@ -42,13 +60,11 @@ polyplay :-
 polyplay :- write("Error, something is not right, you dumb fuck :^) "). %caso erro, imprime menssagem de erro
 
 shw_opt(L) :- remove_ele(by, L, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), write(NP).
-
 mul_opt([X|T]) :- remove_ele(by, T, NL), atoms_to_numbers(NL, [], P), atomic_list_concat(P, "", NP), atom_to_number(X, Num), term_string(K, NP), scalepoly(K, Num, NNP), write(NNP).
+add_opt([X|T]) :- remove_ele(with, T, NL).
 
-add_opt([X|T]) :- remove_ele(with, T, NL), global_variavels()
 %conversao um atom para um numero
 atom_to_number(A, N) :- units(A, [N], []), !.
-
 
 %remove all intancies of that element X from the List and return a new list
 remove_ele(_, [], []):-!.
@@ -64,12 +80,6 @@ atoms_to_numbers([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),r
 atoms_to_numbers([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 atoms_to_numbers([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 atoms_to_numbers([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
-
-/*
-%separaçao do primeiro elemento(show) com os restantes
-sepSH([X|T], L) :- sep(T, L).
-sep([X], [X]):-!.
-sep([X|T], [X|T2]):- sep(T, T2),!.*/
 
 % se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
 option([X|T], 1) :- X = show, shw_opt(T).
@@ -119,31 +129,29 @@ units(C) --> [1],    {C = one},!;
 	           [8],    {C = eight},!;
 	           [9],    {C = nine}.
 
-til20(C) --> [ten],      {C = 10},!;
-	           [eleven],   {C = 11},!;
-	           [twelve],   {C = 12},!;
-	           [thirteen], {C = 13},!;
-	           [fourteen], {C = 14},!;
-	           [fifteen],  {C = 15},!;
-	           [sixteen],  {C = 16},!;
-	           [seventeen],{C = 17},!;
-	           [eighteen], {C = 18},!;
-	           [nineteen], {C = 19}.
+til20(C) --> [10],    {C = ten},!;
+	           [11],    {C = eleven},!;
+	           [12],    {C = twelve},!;
+	           [13],    {C = thirteen},!;
+	           [14],    {C = fourteen},!;
+	           [15],    {C = fifteen},!;
+	           [16],    {C = sixteen},!;
+	           [17],    {C = seventeen},!;
+	           [18],    {C = eighteen},!;
+	           [19],    {C = nineteen}.
 
-tens(C)  --> [twenty], {C = 20},!;
-	           [thirty], {C = 30},!;
-	           [forty],  {C = 40},!;
-	           [fifty],  {C = 50},!;
-	           [sixty],  {C = 60},!;
-	           [seventy],{C = 70},!;
-             [eighty], {C = 80},!;
-	           [ninety], {C = 90}.
+tens(C)  --> [20],   {C = twenty},!;
+	           [30],   {C = thirty},!;
+	           [40],   {C = forty},!;
+	           [50],   {C = fifty},!;
+	           [60],   {C = sixty},!;
+	           [70],   {C = seventy},!;
+             [80],   {C = eighty},!;
+	           [90],   {C = ninety}.
 
 hundreds --> [hundred].
 thousands --> [thousand].
 millions --> [million];[millions].
-
-
 
 /*
 test --> (zero; units; tens).
@@ -184,9 +192,12 @@ variable(V) --> [a], {V = a},!;
 		            [y], {V = y},!;
 		            [z], {V = z}.
 
-%coefficient(C) --> [C], {number(C)}.
-power(P) --> [P], {number(P)}.
+number(L, N) :- list_number(L, T), sumlist(T, N).
 
-%predicados feitos pelo professor!!
-number(C, L, [])-->units(C, L, []).
-number(N, [Z], [])-->tens(T, [Y], []),units(C, [X], []),{Z is X+Y}.
+%[twenty, five] -----> [20, 5]
+list_number([X], [Y]) :- unidade(X, [Y], []), !.
+list_number([X|T], [Y|T2]) :- unidade(X, [Y], []), list_number(T, T2), !.
+
+unidade(W, L, []) :- units(W, L, []).
+unidade(W, L, []) :- til20(W, L, []).
+unidade(W, L, []) :- tens(W, L, []).
