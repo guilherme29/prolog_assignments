@@ -6,8 +6,6 @@ nb_linkval(p3, 0).
 nb_linkval(p4, 0).
 nb_linkval(p5, 0).
 
-
-
 %iniciaçao do programa
 polyplay :-
     write("---Welcome---"), nl,
@@ -23,11 +21,13 @@ polyplay2 :-
 %polyplay2 :- write("Error, something went bad!!"), polyplay2. %caso erro, imprime menssagem de erro
 
 %definiçao das opçoes
-shw_opt(L) :- remove_ele(by, L, NL),
-  atoms_to_numbers(NL, [], P),
+shw_opt([X]) :- global_variavels(X, [G], []), nb_getval(G, Val), write(X),write("="),write(Val), nl.
+shw_opt(L) :-
+  atoms_to_numbers(NNL, [], P),
   atomic_list_concat(P, "", NP),
   write(NP).
-shw_opt(X) :- global_variavels(X, [G], []), nb_getval(X, Val), term_string(K, G), format('~w=~w~n', [K, Val]). 
+
+gVar_is_ele([X|_], [Expr]) :- global_variavels(X, [V], []), nb_getval(V, Expr), term_string(E, Expr).
 
 mul_opt([X|T]) :-
   remove_ele(by, T, NL),
@@ -45,12 +45,7 @@ sim_opt(L) :-
   simpoly(K, Poly),
   write(Poly).
 
-add_opt([X|T]) :- remove_ele(with, T, NL), atoms_to_numbers(L, [], P), atomic_list_concat(P, "", NP), nb_setval(X, NP).
-
-while_not_op([X], [X]) :- unidade(X, _, []), !.
-while_not_op([X|T], [X|T2]) :- unidade(X, _, []), while_not_op(T, T2), !.
-while_not_op([X|T], []) :- simbol(X, _, []), !.
-while_not_op([X|T], []) :- variable(X, _, []), !.
+add_opt([X|T]) :- remove_ele(with, T, L), global_variavels(X, [V], []), atoms_to_numbers(L, [], P), atomic_list_concat(P, "", NP), nb_setval(V, NP).
 
 %conversao um atom para um numero
 atom_to_number(A, N) :- unidade(A, [N], []), !.
@@ -64,11 +59,11 @@ remove_ele(X, [H|T], [H|L]):- remove_ele(X, T, L ), !.
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao
 
 %atoms_to_numbers([X|[Y]], RPoly, P) :- square(X, Y, O), append(L, RPoly, Poly2), reverse(Poly2, P),!.
-atoms_to_numbers([X], RPoly, P) :- units(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
+atoms_to_numbers([X], RPoly, P) :- unidade(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
 atoms_to_numbers([X], RPoly, P) :- simbol(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
 atoms_to_numbers([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),reverse(Poly2, P), !.
 
-atoms_to_numbers([X|T], Poly, P) :- units(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
+atoms_to_numbers([X|T], Poly, P) :- unidade(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 atoms_to_numbers([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 atoms_to_numbers([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 
@@ -133,11 +128,11 @@ tens(C)  --> [20],   {C = twenty},!;
              [80],   {C = eighty},!;
 	           [90],   {C = ninety}.
 
-global_variavels(GV) --> ['P1'], {GV = p1}, !;
-                         ['P2'], {GV = p2}, !;
-                         ['P3'], {GV = p3}, !;
-                         ['P4'], {GV = p4}, !;
-                         ['P5'], {GV = p5}.
+global_variavels(GV) --> [p1], {GV = 'P1'}, !;
+                         [p2], {GV = 'P2'}, !;
+                         [p3], {GV = 'P3'}, !;
+                         [p4], {GV = 'P4'}, !;
+                         [p5], {GV = 'P5'}.
 
 
 variable(V) --> [a], {V = a},!;
