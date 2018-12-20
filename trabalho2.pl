@@ -18,16 +18,12 @@ polyplay2 :-
     option(LA, B), B is 1, nl,
     polyplay2.
 
-%polyplay2 :- write("Error, something went bad!!"), polyplay2. %caso erro, imprime menssagem de erro
-
 %definiçao das opçoes
 shw_opt([X]) :- global_variavels(X, [G], []), nb_getval(G, Val), write(X),write("="),write(Val), nl.
 shw_opt(L) :-
   atoms_to_numbers(NNL, [], P),
   atomic_list_concat(P, "", NP),
   write(NP).
-
-gVar_is_ele([X|_], [Expr]) :- global_variavels(X, [V], []), nb_getval(V, Expr), term_string(E, Expr).
 
 mul_opt([X|T]) :-
   remove_ele(by, T, NL),
@@ -45,20 +41,22 @@ sim_opt(L) :-
   simpoly(K, Poly),
   write(Poly).
 
-add_opt([X|T]) :- remove_ele(with, T, L), global_variavels(X, [V], []), atoms_to_numbers(L, [], P), atomic_list_concat(P, "", NP), nb_setval(V, NP).
+add_opt([X|T]) :-
+  remove_ele(with, T, L),
+  global_variavels(X, [V], []),
+  atoms_to_numbers(L, [], P),
+  atomic_list_concat(P, "", NP),
+  nb_setval(V, NP).
 
 %conversao um atom para um numero
 atom_to_number(A, N) :- unidade(A, [N], []), !.
 
-%remove all intancies of that element X from the List and return a new list
+%remoçao do elemento X de uma lista de elementos
 remove_ele(_, [], []):-!.
 remove_ele(X, [X|T], L):- remove_ele(X, T, L), !.
 remove_ele(X, [H|T], [H|L]):- remove_ele(X, T, L ), !.
 
-%converçao do texto num polinomio
 %converter os atoms em numeros e simbulos e polos numa lista de atoms, depois concata-se tudo e fica numa exprressao
-
-%atoms_to_numbers([X|[Y]], RPoly, P) :- square(X, Y, O), append(L, RPoly, Poly2), reverse(Poly2, P),!.
 atoms_to_numbers([X], RPoly, P) :- unidade(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
 atoms_to_numbers([X], RPoly, P) :- simbol(X, L, []), append(L, RPoly, Poly2), reverse(Poly2, P),!.
 atoms_to_numbers([X], RPoly, P) :- variable(X, L, []), append(L, RPoly, Poly2),reverse(Poly2, P), !.
@@ -68,7 +66,7 @@ atoms_to_numbers([X|T], Poly, P) :- simbol(X, L, []), append(L, Poly, Poly2), at
 atoms_to_numbers([X|T], Poly, P) :- variable(X, L, []), append(L, Poly, Poly2), atoms_to_numbers(T, Poly2, P), !.
 
 
-% se tiver a palavra show,multiply, add, simplify como input entao vamos fazer a conversao de palavras para numeros
+%escolher cada "caminho" de cada opçao dada
 option([X|T], 1) :- X = show, shw_opt(T).
 option([X|T], 1) :- X = multiply, mul_opt(T).
 option([X|T], 1) :- X = add , add_opt(T).
@@ -81,7 +79,7 @@ option([_|_], 0).
 string_list_to_atom([X], [A]) :- string_to_atom(X, A),!.
 string_list_to_atom([X|L1], [A|L2]) :- string_to_atom(X, A), string_list_to_atom(L1, L2),!.
 
-
+%dada uma lista de palavras transforma num numero exe: [fourty, two] = 42
 number(L, N) :- list_number(L, T), sumlist(T, N).
 
 list_number([X], [Y]) :- unidade(X, [Y], []), !.
@@ -90,6 +88,8 @@ list_number([X|T], [Y|T2]) :- unidade(X, [Y], []), list_number(T, T2), !.
 unidade(W, L, []) :- units(W, L, []).
 unidade(W, L, []) :- til20(W, L, []).
 unidade(W, L, []) :- tens(W, L, []).
+
+%%%% DCGs %%%%%
 
 simbol(S) --> [+], {S = plus},!;
               [-], {S = minus},!;
@@ -161,25 +161,3 @@ variable(V) --> [a], {V = a},!;
 		            [x], {V = x},!;
 		            [y], {V = y},!;
 		            [z], {V = z}.
-
-
-
-/*
-polynomial(P+M) --> polynomial(P), plus, monomial(M), !.
-polynomial(P-M) --> polynomial(P), minus, monomial(M), !.
-polynomial(M)   --> monomial(M), !.
-polynomial(-M)  --> minus, monomial(M), !.
-
-monomial(V)     --> variable(V);
-coefficient(V).
-monomial(V^P)   --> variable(V), raise, power(P), !.
-monomial(C*V)   --> coefficient(C), mult, variable(V), !.
-monomial(C*V)   --> number(C), mult, variable(V).
-monomial(C*V^P) --> coefficient(C), mult, variable(V), raise, power(P),!.
-
-
-plus  --> [plus].
-minus --> [minus].
-mult  --> [times].
-raise --> [raised],[to].
-*/
