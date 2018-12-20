@@ -2,7 +2,7 @@ Made by
 A program made for a college project by three students of computer science from Faculty of Science of University of Porto
 
 Name	              University	Country
-Guilherme Amado	    FCUP	      Portugal
+Guilherme Amado     FCUP	      Portugal
 João Vasco	        FCUP	      Portugal
 José Pedro	        FCUP	      Portugal
 
