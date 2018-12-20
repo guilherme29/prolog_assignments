@@ -21,7 +21,7 @@ polyplay2 :-
 %definiçao das opçoes
 shw_opt([X]) :- global_variavels(X, [G], []), nb_getval(G, Val), write(X),write("="),write(Val), nl.
 shw_opt(L) :-
-  atoms_to_numbers(NNL, [], P),
+  atoms_to_numbers(L, [], P),
   atomic_list_concat(P, "", NP),
   write(NP).
 
@@ -46,7 +46,8 @@ add_opt([X|T]) :-
   global_variavels(X, [V], []),
   atoms_to_numbers(L, [], P),
   atomic_list_concat(P, "", NP),
-  nb_setval(V, NP).
+  nb_setval(V, NP),
+  write("Added expression to variable "), write(X).
 
 %conversao um atom para um numero
 atom_to_number(A, N) :- unidade(A, [N], []), !.
@@ -71,7 +72,7 @@ option([X|T], 1) :- X = show, shw_opt(T).
 option([X|T], 1) :- X = multiply, mul_opt(T).
 option([X|T], 1) :- X = add , add_opt(T).
 option([X|T], 1) :- X = simplify, sim_opt(T).
-option([X|_], 1) :- X = bye, write("Goodbye, friend"), nl, abort().
+option([X|_], 1) :- X = bye, write("See ya"), nl, abort().
 option([_|_], 0).
 
 
