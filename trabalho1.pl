@@ -42,74 +42,149 @@ poly2listaux(Y-X,[-X|Y1]):-poly2listaux(Y,Y1),!.
 poly2listaux(Y+X,[X|Y1]):-poly2listaux(Y,Y1),!.
 
 %simplifica um polinomio
-simpoly(M,M2):-monomial(M),simmon(M,M2),!.
-simpoly(P+0,P):-!.
-simpoly(0+P,P):-monomial(P),!.
-simpoly(P+M,P2+M3):-
-    monparts(M,_,XExp),
-    delmonomial(P,XExp,M2,P2),!,
-    addmonomial(M,M2,M3).
-simpoly(P+M,P2+M2):-simpoly(P,P2),simmon(M,M2),!.
 
-simpoly(P-0,P):-!.
-simpoly(0-P,-P):-monomial(-P),!.
-simpoly(P-M,P2-M3):-
-    monparts(M,_,XExp),
-    delmonomial(P,XExp,M2,P2),!,
-    submonomial(M,M2,M3).
-simpoly(P-M,P2-M2):-simpoly(P,P2),simmon(M,M2),!.
+simpoly(P,P):-
+ aux_simpoly(P,P2),
+ P==P2,!.
+simpoly(P,P3):-
+ aux_simpoly(P,P2),
+ simpoly(P2,P3),!.
 
-%corrigir sistema 64-bit IEEE
-truncate(X,N,Result):- X >= 0, Result is floor(10^N*X)/10^N, !.
-truncate(X,N,Result):- X <  0, Result is ceil(10^N*X)/10^N, !.
+minus_op(M1,M2):- number(M1), M1 < 0, M2 is M1*(-1),!.
+minus_op(-M,M):-!.
+minus_op(-1*M,M):-!.
+minus_op(M1,M1).
 
-%simplifica um monomio
-simmon(1*P,P):-power(P),!.
+aux_simpoly(P-0,P):-!.
+aux_simpoly(0-M,-M):-monomial(M),!.
+aux_simpoly(P-M,M3):-
+ monparts(M,_,XExp),
+ delmonomial(P,XExp,M2,P2),
+ P2 == 0,
+ submonomial(M2,M,M3).
+aux_simpoly(P-M,P2-R):-
+ monparts(M,_,XExp),
+ delmonomial(P,XExp,M2,P2),
+ submonomial(M2,M,M3), minus_op(M3,R).
+
+
+aux_simpoly(P-M,P2-M3):-
+monparts(M,_,XExp),
+delmonomial(P,XExp,M2,P2),!,
+submonomial(M2,M,M3).
+aux_simpoly(P-M,P2-M2):-aux_simpoly(P,P2),simmon(M,M2).
+
+
+aux_simpoly(P+0,P):-!.
+aux_simpoly(0+M,M):-monomial(M),!.
+
+aux_simpoly(P+M,P2-R):-
+   number(M),
+   monparts(M,_,XExp),
+   delmonomial(P,XExp,M2,P2),
+   addmonomial(M,M2,M3),
+   M3 < 0,
+   minus_op(M3,R).
+
+aux_simpoly(P+M,P2+M3):-
+   monparts(M,_,XExp),
+   delmonomial(P,XExp,M2,P2),!,
+   addmonomial(M,M2,M3).
+aux_simpoly(P+M,P2+M2):-aux_simpoly(P,P2),simmon(M,M2).
+%Adicionar outro caso para se M2 for negativo
+
+aux_simpoly(M,M2):-monomial(M), simmon(M,M2),!.
+
+simmon(1*P,P):- power(P),!.
+simmon(-1*P,-P):-power(P),!.
+simmon(P*1,P):- power(P),!.
+simmon(0-P,-P):-!.
 simmon(0*_,0):-!.
+simmon(_*0,0):-!.
+%simmon(K1*K2,R):-number(K1), number(K2), R is K1*K2,!.
 simmon(M,M).
 
-%divide um monomio em partes
+mult(K1*K2,R):-number(K1), number(K2), R is K1*K2,!.
+
 monparts(X^N,1,X^N):-power(X^N),!.
 monparts(K*P,K,P):-number(K),!.
+monparts(P*K,K,P):-number(K),!.
 monparts(K,K,indep):-number(K),!.
 monparts(X,1,X):-pvar(X),!.
 
-delmonomial(M,X,M,0):- monomial(M),monparts(M,_,X),!.
+expmonparts(X^N,N,X):-power(X^N),!.
+
+delmonomial(M,X,M,0):-
+ monomial(M),monparts(M,_,X),!.
+delmonomial(M-M2,X,M,NM):-
+ number(M2),monomial(M),monparts(M,_,X),
+ NM is -M2,!.
+delmonomial(P-M,X,NM,P):-
+ number(M),NM is -M, monparts(NM,_,X),!.
+
+
+delmonomial(M-K*M2,X,M,NK*M2):-
+   monomial(M2),
+   monomial(M),
+   monparts(M,_,X), NK is -K,!.
+
+delmonomial(P-M,X,-M,P):-
+   monomial(M),
+   monparts(M,_,X),!.
+
+
+delmonomial(M-M2,X,M,-M2):-
+   monomial(M2),
+   monomial(M),
+   monparts(M,_,X),!.
+
+delmonomial(P-M,X,-M,P):-
+   monomial(M),
+   monparts(M,_,X),!.
+
+delmonomial(P-M2,X,M,P2-M2):-
+ delmonomial(P,X,M,P2).
+
 delmonomial(M+M2,X,M,M2):-
-    monomial(M2),
-    monomial(M),
-    monparts(M,_,X), !.
-delmonomial(P+M,X,M,P):- monomial(M),monparts(M,_,X),!.
-delmonomial(P+M2,X,M,P2+M2):- delmonomial(P,X,M,P2).
+ monomial(M2),monomial(M),monparts(M,_,X),!.
+delmonomial(P+M,X,M,P):-
+ monomial(M),monparts(M,_,X),!.
+delmonomial(P+M2,X,M,P2+M2):-
+ delmonomial(P,X,M,P2).
 
-%soma de dois monomios
-addmonomial(K1,K2,Res):-
-    number(K1),
-    number(K2),
-    K3 is K1+K2,
-    truncate(K3, 2, Res).
-addmonomial(M1,M2,M3):-
+ addmonomial(-K1,K2,K3):-
+   K3 is K2-K1.
+ addmonomial(K1,K2,K3):-
+  number(K1),number(K2),!,
+  K3 is K1+K2.
+ addmonomial(M1,M2,M3):-
     monparts(M1,K1,XExp),
     monparts(M2,K2,XExp),
     K3 is K1+K2,
-    truncate(K3, 2, Res),
-    aux_addmonomial(Res,XExp,M3).
-
-%subtracao de dois monomios
-submonomial(K1,K2,K3):-
-    number(K1),
-    number(K2), !,
-    K3 is K1-K2.
-submonomial(M1,M2,M3):-
-    monparts(M1,K1,XExp),
-    monparts(M2,K2,XExp),
-    K3 is K1-K2,
     aux_addmonomial(K3,XExp,M3).
 
-aux_addmonomial(K,indep,K):-!.
-aux_addmonomial(0,_,0):-!.
-aux_addmonomial(1,XExp,XExp):-!.
-aux_addmonomial(K,XExp,K*XExp).
+ aux_addmonomial(K,indep,K):-!.
+ aux_addmonomial(0,_,0):-!.
+ aux_addmonomial(1,XExp,XExp):-!.
+ aux_addmonomial(K,XExp,K*XExp).
+
+ submonomial(-K1,K2,K3):-
+   number(K1),number(K2),!,
+   K3 is -(K1+K2).
+ submonomial(K1,K2,K3):-
+  number(K1),number(K2),!,
+  K3 is K1-K2.
+ submonomial(M1,M2,M3):-
+  monparts(M1,K1,XExp),
+  monparts(M2,K2,XExp),
+  K3 is K1-K2,
+  aux_submonomial(K3,XExp,M3).
+
+
+ aux_submonomial(K,indep,K):-!.
+ aux_submonomial(0,_,0):-!.
+ aux_submonomial(1,XExp,XExp):-!.
+ aux_submonomial(K,XExp,K*XExp).
 
 %transforma uma lista num polinomio
 list2poly([P],P):-monomial(P), !.
