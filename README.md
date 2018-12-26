@@ -19,19 +19,21 @@ A program made for a college assignment by three students
 of computer science from Faculty of Science of University of Porto
 
 
-| Name            | University    | Country  |
-| --------------- |:-------------:|--------: |
-| Guilherme Amado | [FCUP][1]     | Portugal |
-| João Vasco      | [FCUP][1]     | Portugal |
-| José Pedro      | [FCUP][1]     | Portugal |
+| Name            | University    | Country  |    Linkdin    |
+| --------------- |:-------------:|:-------: | -------------:|
+| José Pedro      | [FCUP][1]     | Portugal |  [Profile][2] |
+| Guilherme Amado | [FCUP][1]     | Portugal |  [Profile][3] |
+| João Vasco      | [FCUP][1]     | Portugal |  [Profile][4] |
 
 [1]: https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL
-
+[2]: https://www.linkedin.com/in/jose-pedro-sousa-71328612a/
+[3]:
+[4]:
 ## First part of the assignment
   Implementation of the "functions" used to calculate/simplify the input polynomials by the user.
-  For more information check [here the statement][2]
+  For more information check [here the statement][5]
 
-[2]: https://github.com/guilherme29/prolog_assignments/blob/master/assignment2.pdf
+[5]: https://github.com/guilherme29/prolog_assignments/blob/master/assignment1.pdf
 
 ### Some test cases (Queries)
 
@@ -62,6 +64,10 @@ of computer science from Faculty of Science of University of Porto
 
   We tried to get this calculator to decimal numbers, but we still can not get this "feature".
   We are working to get this tool as soon as possible.
+
+  For more information check [here the statement][6]
+
+[6]: https://github.com/guilherme29/prolog_assignments/blob/master/assignment2.pdf
 
 ### Some test cases (Queries)
   To run the program you need to go to a "secondary shell", by typing the next comand:
@@ -94,3 +100,10 @@ of computer science from Faculty of Science of University of Porto
   |: "bye".
   See ya
 ```
+
+### Notes
+
+  The work has already been delivered to the teacher of the discipline but the project is not over yet.
+
+  This work is still under development and anyone who wants to help to improve, it is welcome to join, but for it you must contact
+  one of the administrators (one of the students in the table indicated above).
