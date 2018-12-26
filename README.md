@@ -22,8 +22,8 @@ of computer science from Faculty of Science of University of Porto
 | Name            | University    | Country  |    Linkdin    |
 | --------------- |:-------------:|:-------: | -------------:|
 | José Pedro      | [FCUP][1]     | Portugal |  [Profile][2] |
-| Guilherme Amado | [FCUP][1]     | Portugal |  [Profile][3] |
-| João Vasco      | [FCUP][1]     | Portugal |  [Profile][4] |
+| Guilherme Amado | [FCUP][1]     | Portugal |   Profile     |
+| João Vasco      | [FCUP][1]     | Portugal |   Profile     |
 
 [1]: https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL
 [2]: https://www.linkedin.com/in/jose-pedro-sousa-71328612a/
