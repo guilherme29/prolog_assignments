@@ -81,8 +81,7 @@ of computer science from Faculty of Science of University of Porto
 | "simplify three plus one plus x plus three times x" | 5+4*x                           | simplify an given expression                     |
 | "bye"                                               | See ya                          | exit the "secondary shell"                       |   
 
-
-```Prolog
+```
   ? -
   |: "show three plus four".
   3+4
