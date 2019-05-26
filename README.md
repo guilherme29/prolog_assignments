@@ -28,7 +28,7 @@ of computer science from Faculty of Science of University of Porto
 [1]: https://sigarra.up.pt/fcup/en/WEB_PAGE.INICIAL
 [2]: https://www.linkedin.com/in/jose-pedro-sousa-71328612a/
 [3]: https://www.linkedin.com/in/guilherme-amado-9b0464183/
-[4]:
+
 ## First part of the assignment
   Implementation of the "functions" used to calculate/simplify the input polynomials by the user.
   For more information check [here the statement][5]
