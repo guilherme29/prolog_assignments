@@ -19,7 +19,7 @@ A program made for a college assignment by three students
 of computer science from Faculty of Science of University of Porto
 
 
-| Name            | University    | Country  |    Linkdin    |
+| Name            | University    | Country  |    Linkedin   |
 | --------------- |:-------------:|:-------: | -------------:|
 | José Pedro      | [FCUP][1]     | Portugal |  [Profile][2] |
 | Guilherme Amado | [FCUP][1]     | Portugal |  [Profile][3] |
